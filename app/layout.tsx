@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cinzel, Lora } from "next/font/google";
 import "./globals.css";
 
@@ -18,7 +18,13 @@ export const metadata: Metadata = {
   title: "Hamster Adventure Portfolio",
   description:
     "An interactive 3D portfolio where a hamster explores floating islands",
-  viewport: "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default function RootLayout({
