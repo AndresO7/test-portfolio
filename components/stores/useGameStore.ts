@@ -11,6 +11,7 @@ export const useGameStore = create<GameState>((set) => ({
   hasMovedOnce: false,
   isLoading: true,
   playerPosition: SPAWN_POSITION,
+  touchInput: [0, 0] as [number, number],
 
   setActiveSection: (section: SectionId | null) =>
     set({ activeSection: section }),
@@ -29,4 +30,5 @@ export const useGameStore = create<GameState>((set) => ({
   setIsLoading: (loading: boolean) => set({ isLoading: loading }),
 
   setPlayerPosition: (pos) => set({ playerPosition: pos }),
+  setTouchInput: (input) => set({ touchInput: input }),
 }));

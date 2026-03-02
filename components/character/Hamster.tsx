@@ -177,14 +177,17 @@ export default function Hamster() {
       return;
     }
 
-    // Movement input
+    // Movement input (keyboard + touch joystick)
+    const touch = useGameStore.getState().touchInput;
     const direction = new THREE.Vector3();
     if (forward) direction.z -= 1;
     if (backward) direction.z += 1;
     if (left) direction.x -= 1;
     if (right) direction.x += 1;
+    direction.x += touch[0];
+    direction.z += touch[1];
 
-    const moving = direction.length() > 0;
+    const moving = direction.length() > 0.15;
 
     if (moving) {
       setHasMovedOnce();

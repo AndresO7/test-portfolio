@@ -5,10 +5,14 @@ import PortfolioOverlay from "./PortfolioOverlay";
 import ControlsHint from "./ControlsHint";
 import LoadingScreen from "./LoadingScreen";
 import AdventureNav from "./AdventureNav";
+import VirtualJoystick from "./VirtualJoystick";
 import { useGameStore } from "@/components/stores/useGameStore";
+import { useIsMobile } from "@/lib/useIsMobile";
 
 export default function HUD() {
-  // Listen for E key → open overlay when near a house
+  const isMobile = useIsMobile();
+
+  // Listen for E key → open overlay when near a house (desktop only)
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (e.key === "e" || e.key === "E") {
@@ -29,6 +33,7 @@ export default function HUD() {
       <AdventureNav />
       <ControlsHint />
       <PortfolioOverlay />
+      {isMobile && <VirtualJoystick />}
     </>
   );
 }

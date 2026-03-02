@@ -3,6 +3,7 @@
 import { useEffect, useCallback } from "react";
 import { useGameStore } from "@/components/stores/useGameStore";
 import { SECTION_META } from "@/lib/constants";
+import { useIsMobile } from "@/lib/useIsMobile";
 import AboutContent from "./sections/AboutContent";
 import ProjectsContent from "./sections/ProjectsContent";
 import SkillsContent from "./sections/SkillsContent";
@@ -20,6 +21,7 @@ const sectionComponents: Record<SectionId, React.ComponentType> = {
 
 export default function PortfolioOverlay() {
   const { activeSection, isOverlayOpen, closeOverlay } = useGameStore();
+  const isMobile = useIsMobile();
 
   const handleClose = useCallback(() => closeOverlay(), [closeOverlay]);
 
@@ -44,7 +46,7 @@ export default function PortfolioOverlay() {
         position: "fixed",
         inset: 0,
         display: "flex",
-        alignItems: "center",
+        alignItems: isMobile ? "flex-end" : "center",
         justifyContent: "center",
         zIndex: 100,
         background: "rgba(30, 20, 10, 0.45)",
@@ -56,13 +58,15 @@ export default function PortfolioOverlay() {
       <div
         onClick={(e) => e.stopPropagation()}
         style={{
-          maxWidth: "540px",
-          width: "92%",
-          maxHeight: "82vh",
+          maxWidth: isMobile ? "100%" : "540px",
+          width: isMobile ? "100%" : "92%",
+          maxHeight: isMobile ? "88vh" : "82vh",
           overflowY: "auto",
-          borderRadius: "6px",
+          borderRadius: isMobile ? "14px 14px 0 0" : "6px",
           position: "relative",
-          animation: "unroll 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+          animation: isMobile
+            ? "slideUp 0.35s cubic-bezier(0.16, 1, 0.3, 1)"
+            : "unroll 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
 
           /* Parchment background */
           background:
@@ -71,7 +75,8 @@ export default function PortfolioOverlay() {
             "linear-gradient(170deg, #f5e8cc 0%, #e8d5a8 35%, #f0ddb4 65%, #e2cda0 100%)",
 
           /* Wooden frame */
-          border: "3px solid var(--wood-border)",
+          border: isMobile ? "2px solid var(--wood-border)" : "3px solid var(--wood-border)",
+          borderBottom: isMobile ? "none" : undefined,
           boxShadow:
             "inset 0 0 0 1px rgba(255,255,255,0.25)," +
             "inset 0 0 0 4px var(--wood-dark)," +
@@ -84,7 +89,7 @@ export default function PortfolioOverlay() {
         {/* Top decorative bar */}
         <div
           style={{
-            height: 32,
+            height: isMobile ? 36 : 32,
             background:
               "linear-gradient(180deg, #6b4e30 0%, #8b6914 40%, #a0845c 100%)",
             borderBottom: "2px solid #5c3a1e",
@@ -96,31 +101,38 @@ export default function PortfolioOverlay() {
             color: "#f5e8cc",
             fontFamily: "var(--font-display), serif",
             letterSpacing: "0.06em",
+            borderRadius: isMobile ? "12px 12px 0 0" : undefined,
           }}
         >
           <span style={{ fontSize: "12px" }}>{icon}</span>
-          <span style={{ fontSize: "11px", fontWeight: 700, textTransform: "uppercase" }}>
+          <span
+            style={{
+              fontSize: "11px",
+              fontWeight: 700,
+              textTransform: "uppercase",
+            }}
+          >
             {meta.name}
           </span>
           <span style={{ fontSize: "12px" }}>{icon}</span>
         </div>
 
-        <div style={{ padding: "1.5rem 1.75rem 1.75rem" }}>
-          {/* Close button – like a wax seal */}
+        <div style={{ padding: isMobile ? "1rem 1.25rem 1.25rem" : "1.5rem 1.75rem 1.75rem" }}>
+          {/* Close button */}
           <button
             onClick={handleClose}
             style={{
               position: "absolute",
-              top: "42px",
+              top: isMobile ? "44px" : "42px",
               right: "12px",
               background: "linear-gradient(135deg, #a0845c, #8b6914)",
               border: "2px solid #5c3a1e",
               color: "#f5e8cc",
-              width: "28px",
-              height: "28px",
+              width: isMobile ? "32px" : "28px",
+              height: isMobile ? "32px" : "28px",
               borderRadius: "50%",
               cursor: "pointer",
-              fontSize: "13px",
+              fontSize: isMobile ? "15px" : "13px",
               fontWeight: 700,
               display: "flex",
               alignItems: "center",
@@ -144,7 +156,7 @@ export default function PortfolioOverlay() {
         {/* Bottom decorative bar */}
         <div
           style={{
-            height: 24,
+            height: isMobile ? 28 : 24,
             background:
               "linear-gradient(0deg, #6b4e30 0%, #8b6914 50%, #a0845c 100%)",
             borderTop: "2px solid #5c3a1e",
@@ -153,8 +165,14 @@ export default function PortfolioOverlay() {
             justifyContent: "center",
           }}
         >
-          <span style={{ fontSize: "9px", color: "#d4bc8a", letterSpacing: "0.1em" }}>
-            ESC para cerrar
+          <span
+            style={{
+              fontSize: "9px",
+              color: "#d4bc8a",
+              letterSpacing: "0.1em",
+            }}
+          >
+            {isMobile ? "Toca fuera para cerrar" : "ESC para cerrar"}
           </span>
         </div>
       </div>

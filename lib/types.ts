@@ -30,6 +30,7 @@ export interface GameState {
   hasMovedOnce: boolean;
   isLoading: boolean;
   playerPosition: Vector3Tuple;
+  touchInput: [number, number];
   setActiveSection: (section: SectionId | null) => void;
   setNearSection: (section: SectionId | null) => void;
   openOverlay: (section: SectionId) => void;
@@ -37,4 +38,5 @@ export interface GameState {
   setHasMovedOnce: () => void;
   setIsLoading: (loading: boolean) => void;
   setPlayerPosition: (pos: Vector3Tuple) => void;
+  setTouchInput: (input: [number, number]) => void;
 }

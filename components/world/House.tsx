@@ -6,6 +6,7 @@ import { Html, useGLTF } from "@react-three/drei";
 import { useGameStore } from "@/components/stores/useGameStore";
 import { SECTION_META } from "@/lib/constants";
 import { SectionId } from "@/lib/types";
+import { useIsMobile } from "@/lib/useIsMobile";
 import * as THREE from "three";
 
 const MODEL_PATH = "/house/base_basic_shaded.glb";
@@ -24,8 +25,10 @@ export default function House({ sectionId, label }: HouseProps) {
   const setNearSection = useGameStore((s) => s.setNearSection);
   const nearSection = useGameStore((s) => s.nearSection);
   const isOverlayOpen = useGameStore((s) => s.isOverlayOpen);
+  const openOverlay = useGameStore((s) => s.openOverlay);
   const showTooltip = nearSection === sectionId && !isOverlayOpen;
   const meta = SECTION_META[sectionId];
+  const isMobile = useIsMobile();
 
   const { scene } = useGLTF(MODEL_PATH);
 
@@ -130,41 +133,49 @@ export default function House({ sectionId, label }: HouseProps) {
       {showTooltip && (
         <Html position={[0, HALF_H * 2 + 0.2, 2.5]} center distanceFactor={18}>
           <div
+            onClick={() => openOverlay(sectionId)}
             style={{
               background:
                 "linear-gradient(180deg, #f5e6c8 0%, #e8d4a8 100%)",
               border: "2px solid #a0845c",
               borderRadius: "10px",
-              padding: "8px 16px",
+              padding: isMobile ? "10px 20px" : "8px 16px",
               color: "#4a3520",
               fontFamily: "var(--font-display), serif",
-              fontSize: "13px",
+              fontSize: isMobile ? "15px" : "13px",
               fontWeight: 600,
               whiteSpace: "nowrap",
               boxShadow:
                 "0 4px 16px rgba(80, 50, 10, 0.35), inset 0 1px 0 rgba(255,255,255,0.4)",
               textAlign: "center",
-              pointerEvents: "none",
+              pointerEvents: "auto",
+              cursor: "pointer",
               animation: "float 2s ease-in-out infinite",
               lineHeight: 1.4,
             }}
           >
-            Presiona{" "}
-            <span
-              style={{
-                display: "inline-block",
-                background: "#4a3520",
-                color: "#f5e6c8",
-                padding: "1px 7px",
-                borderRadius: "4px",
-                fontWeight: 700,
-                fontSize: "12px",
-                margin: "0 2px",
-              }}
-            >
-              E
-            </span>{" "}
-            para explorar
+            {isMobile ? (
+              "Toca para explorar"
+            ) : (
+              <>
+                Presiona{" "}
+                <span
+                  style={{
+                    display: "inline-block",
+                    background: "#4a3520",
+                    color: "#f5e6c8",
+                    padding: "1px 7px",
+                    borderRadius: "4px",
+                    fontWeight: 700,
+                    fontSize: "12px",
+                    margin: "0 2px",
+                  }}
+                >
+                  E
+                </span>{" "}
+                para explorar
+              </>
+            )}
             <div
               style={{
                 position: "absolute",

@@ -18,6 +18,7 @@ export const metadata: Metadata = {
   title: "Hamster Adventure Portfolio",
   description:
     "An interactive 3D portfolio where a hamster explores floating islands",
+  viewport: "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no",
 };
 
 export default function RootLayout({
