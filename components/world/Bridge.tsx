@@ -40,6 +40,9 @@ export default function Bridge({ from, to, fromRadius, toRadius }: BridgeProps) 
     <group position={position} rotation={rotation}>
       <RigidBody type="fixed" colliders={false}>
         <CuboidCollider args={[1.0, 0.15, length / 2]} position={[0, 0, 0]} />
+        {/* Side rail colliders – prevent falling off edges */}
+        <CuboidCollider args={[0.08, 0.6, length / 2]} position={[-1.0, 0.6, 0]} />
+        <CuboidCollider args={[0.08, 0.6, length / 2]} position={[1.0, 0.6, 0]} />
 
         {/* ── Planks ── */}
         {Array.from({ length: planks }).map((_, i) => {

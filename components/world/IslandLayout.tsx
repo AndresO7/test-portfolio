@@ -19,6 +19,20 @@ const islandDecorations: Record<string, React.ComponentType> = {
   contact: ContactIsland,
 };
 
+function getBridgeAngles(islandId: string): number[] {
+  const island = ISLANDS.find((i) => i.id === islandId)!;
+  return BRIDGES.filter((b) => b.from === islandId || b.to === islandId).map(
+    (b) => {
+      const otherId = b.from === islandId ? b.to : b.from;
+      const other = ISLANDS.find((i) => i.id === otherId)!;
+      const dx = other.position[0] - island.position[0];
+      const dz = other.position[2] - island.position[2];
+      const a = Math.atan2(dz, dx);
+      return a < 0 ? a + 2 * Math.PI : a;
+    },
+  );
+}
+
 export default function IslandLayout() {
   return (
     <group>
@@ -31,6 +45,7 @@ export default function IslandLayout() {
             radius={island.radius}
             color={island.color}
             rockColor={island.rockColor}
+            bridgeAngles={getBridgeAngles(island.id)}
           >
             <House
               sectionId={island.id as SectionId}
